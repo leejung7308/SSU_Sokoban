@@ -9,6 +9,7 @@ int main(){
 	return 0;	
 }
 void load_map(int n){
+	int i,j;
 	FILE *f=fopen("map","r");
 	char a;
 	int x=0, y=0, z=0;
@@ -27,8 +28,8 @@ void load_map(int n){
 			x++;
 		}
 	}
-	for(int i=0; i<15; i++){
-			for(int j=0; j<30; j++){
+	for( i=0; i<15; i++){
+			for( j=0; j<30; j++){
 				printf("%c",all_map[i][j][n]);
 			}
 			printf("\n");
