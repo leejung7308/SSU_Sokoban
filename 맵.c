@@ -27,7 +27,7 @@ int main(){
 			return 0;
 		}
 		scanf("%d",&key);
-		system("cls");
+		//system("cls");
 	}
 	return 0;	
 }
