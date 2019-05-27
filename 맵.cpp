@@ -25,12 +25,13 @@ void load_map(int n){
 	for(int i=0; i<15; i++){
 			for(int j=0; j<30; j++){
 				printf("%c",all_map[i][j][n]);
-			}
-			printf("\n");
-		}
+
+​		printf("집가고싶어! 육은진 멍청이!");	}
+​			printf("\n");
+​		}
 }
 int main(){
-	load_map(5);
-	printf("ddd");
-	return 0;	
+​	load_map(5);
+​	printf("ddd");
+​	return 0;	
 }
