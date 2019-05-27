@@ -3,6 +3,11 @@
 #include<Windows.h>
 char all_map[15][30][6] = { 0 };
 char map[65][30]={0};
+void load_map(int n);
+int main(){
+	load_map(5);
+	return 0;	
+}
 void load_map(int n){
 	FILE *f=fopen("map","r");
 	char a;
@@ -28,8 +33,4 @@ void load_map(int n){
 			}
 			printf("\n");
 		}
-}
-int main(){
-	load_map(5);
-	return 0;	
 }
