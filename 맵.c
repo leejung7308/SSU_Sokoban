@@ -5,7 +5,7 @@ char all_map[15][30][6] = { 0 };
 char map[65][30]={0};
 void load_map();
 int main(){
-	int pos_x, pos_y, cnt_O, cnt_$;
+	int pos_x, pos_y, cnt_O=0, cnt_$=0, i, j, key;
 	int level=1;
 	load_map();
 	while(1){
@@ -21,10 +21,13 @@ int main(){
 			}
 			printf("\n");
 		}
-		if(cnt_O==cnt_$){
+		printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
+		if(cnt_O!=cnt_$){
 			printf("박스와 보관장소의 개수가 맞지 않습니다.\n");
 			return 0;
-		}	
+		}
+		scanf("%d",&key);
+		system("cls");
 	}
 	return 0;	
 }
