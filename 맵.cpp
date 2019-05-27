@@ -31,6 +31,5 @@ void load_map(int n){
 }
 int main(){
 	load_map(5);
-	printf("ddd");
 	return 0;	
 }
