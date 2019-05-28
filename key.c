@@ -4,10 +4,10 @@
 #include<termios.h>
 void load_map();
 int getch(void);
-void left(int pos_x, int pos_y, int level);
-void right(int pos_x, int pos_y, int level);
-void up(int pos_x, int pos_y, int level);
-void down(int pos_x, int pos_y, int level);
+void left(int x, int y, int level);
+void right(int x, int y, int level);
+void up(int x, int y, int level);
+void down(int x, int y, int level);
 
 char all_map[30][30][6] = { 0 };
 char map[65][30]={0};
@@ -134,7 +134,7 @@ int getch(void){
 
     return ch;
 }
-void left(int pos_x, int pos_y, int level){
+void left(int x, int y, int level){
 	cnt++;
 	if(all_map[y][x-1][level]=='#') ;
 	else{
@@ -152,7 +152,7 @@ void left(int pos_x, int pos_y, int level){
 		}
 	}
 }
-void right(int pos_x, int pos_y, int level){
+void right(int x, int y, int level){
 	cnt++;
 	if(all_map[y][x+1][level]=='#') ;
 	else{
@@ -170,7 +170,7 @@ void right(int pos_x, int pos_y, int level){
 		}
 	}
 }
-void up(int pos_x, int pos_y, int level){
+void up(int x, int y, int level){
 	cnt++;
 	if(all_map[y-1][x][level]=='#') ;
 	else{
@@ -188,7 +188,7 @@ void up(int pos_x, int pos_y, int level){
 		}
 	}
 }
-void down(int pos_x, int pos_y, int level){
+void down(int x, int y, int level){
 	cnt++;
 	if(all_map[y+1][x][level]=='#') ;
 	else{
