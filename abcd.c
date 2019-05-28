@@ -5,10 +5,11 @@
 char all_map[30][30][6] = { 0 };
 char map[65][30]={0};
 void load_map();
-int getch(void);
+void push_key();
+int getch();
 int cnt = 0;
 int main(){
-	int pos_x, pos_y, cnt_O=0, cnt_$=0, i, j, key;
+	int cnt_O, cnt_$, i, j, pos_x, pos_y;
 	int level=1;
 	load_map();
 	while(1){
@@ -23,43 +24,6 @@ int main(){
 				if(all_map[i][j][level]=='$') cnt_$++;
 			}
 		}
-
-                printf("COUNT : %d\n", cnt);
-
-                //printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
-           
-                key = getch();
-
-                switch (key)
-                {
-                case 104:             //left
-                    
-                    break;
-                case 108:             //right
-                    break;
-                case 107:             //up
-                    break;
-                case 106:             //down
-                    break;
-                case 117:             //undo
-                    break;
-                case 114:             //replay
-                    break;
-                case 110:             //new
-                    break;
-                case 101:             //exit
-                    break;
-                case 115:             //save
-                    break;
-                case 102:             //file load
-                    break;
-                case 100:             //display help
-                    break;
-                case 116:             //top
-                    break;
-                default:
-                    break;
-                }
 		if(cnt_O!=cnt_$){
 			printf("박스와 보관장소의 개수가 맞지 않습니다.\n");
 			return 0;
@@ -75,6 +39,47 @@ int main(){
 				printf("\n");
 				if(end[0]==0) break;
 			}
+		 	printf("COUNT : %d\n", cnt);
+
+                        printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
+
+			push_key();
+                        /*key = getch();
+
+                        switch (key)
+                        {
+                            case 104:             //left
+				cnt++;
+                                break;
+                            case 108:             //right
+				cnt++;
+                                break;
+                            case 107:             //up
+				cnt++;
+                                break;
+                            case 106:             //down
+				cnt++;
+                                break;
+                            case 117:             //undo
+                                break;
+                            case 114:             //replay
+                                break;
+                            case 110:             //new
+                                break;
+                            case 101:             //exit
+                                break;
+                            case 115:             //save
+                                break;
+                            case 102:             //file load
+                                break;
+                            case 100:             //display help
+                                break;
+                            case 116:             //top
+                                break;
+                            default:
+                                break;
+                        }*/
+
 			system("clear");
 		}
 	}
@@ -105,6 +110,7 @@ void load_map(){
 		all_map[0][0][i]=i+48;
 	}
 }
+
 int getch(void){
     int ch;
 
@@ -124,4 +130,43 @@ int getch(void){
     tcsetattr(0, TCSAFLUSH, &save);
 
     return ch;
+}
+
+void push_key(void){
+	int key;
+	key = getch();
+
+        switch (key)
+        {
+            case 104:             //left
+                cnt++;
+                break;
+            case 108:             //right
+                cnt++;
+                break;
+            case 107:             //up
+                cnt++;
+                break;
+            case 106:             //down
+                cnt++;
+                break;
+            case 117:             //undo
+                break;
+            case 114:             //replay
+                break;
+            case 110:             //new
+                break;
+            case 101:             //exit
+                break;
+            case 115:             //save
+                break;
+            case 102:             //file load
+                break;
+            case 100:             //display help
+                break;
+            case 116:             //top
+                break;
+            default:
+                break;
+       }
 }
