@@ -5,27 +5,8 @@
 char all_map[30][30][6] = { 0 };
 char map[65][30]={0};
 void load_map();
+int getch(void);
 int cnt = 0;
-int getch(void){
-    int ch;
-
-    struct termios buf;
-    struct termios save;
-
-    tcgetattr(0, &save);
-    buf = save;
-
-    buf.c_lflag&=~(ICANON|ECHO);
-    buf.c_cc[VMIN] = 1;
-    buf.c_cc[VTIME] = 0;
-
-    tcsetattr(0, TCSAFLUSH, &buf);
-
-    ch = getchar();
-    tcsetattr(0, TCSAFLUSH, &save);
-
-    return ch;
-}
 int main(){
 	int pos_x, pos_y, cnt_O=0, cnt_$=0, i, j, key;
 	int level=1;
@@ -123,4 +104,24 @@ void load_map(){
 	for(i=1; i<=5; i++){
 		all_map[0][0][i]=i+48;
 	}
+}
+int getch(void){
+    int ch;
+
+    struct termios buf;
+    struct termios save;
+
+    tcgetattr(0, &save);
+    buf = save;
+
+    buf.c_lflag&=~(ICANON|ECHO);
+    buf.c_cc[VMIN] = 1;
+    buf.c_cc[VTIME] = 0;
+
+    tcsetattr(0, TCSAFLUSH, &buf);
+
+    ch = getchar();
+    tcsetattr(0, TCSAFLUSH, &save);
+
+    return ch;
 }
