@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<Windows.h>
-char all_map[15][30][6] = { 0 };
+char all_map[30][30][6] = { 0 };
 char map[65][30]={0};
 void load_map();
 int main(){
@@ -9,9 +9,8 @@ int main(){
 	int level=1;
 	load_map();
 	while(1){
-		for(i=0; i<15; i++){
+		for(i=0; i<30; i++){
 			for(j=0; j<30; j++){
-				printf("%c",all_map[i][j][level]);
 				if(all_map[i][j][level]=='@'){
 					pos_x=j;
 					pos_y=i;
@@ -19,15 +18,26 @@ int main(){
 				if(all_map[i][j][level]=='O') cnt_O++;
 				if(all_map[i][j][level]=='$') cnt_$++;
 			}
-			printf("\n");
 		}
 		printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
 		if(cnt_O!=cnt_$){
 			printf("박스와 보관장소의 개수가 맞지 않습니다.\n");
 			return 0;
 		}
-		scanf("%d",&key);
-		system("clear");
+		while(1){
+			printf("stage");
+			for(i=0; i<30; i++){
+				char end[30]={0};
+				for(j=0; j<30; j++){
+					printf("%c",all_map[i][j][level]);
+					end[j]=all_map[i][j][level];
+				}
+				printf("\n");
+				if(end[0]==0) break;
+			}
+			scanf("%d",&key);
+			system("clear");
+		}
 	}
 	return 0;	
 }
@@ -50,5 +60,8 @@ void load_map(){
 			all_map[y][x][z]=a;
 			x++;
 		}
+	}
+	for(i=1; i<=5; i++){
+		all_map[0][0][i]=i+48;
 	}
 }
