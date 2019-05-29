@@ -3,39 +3,39 @@
 #include<Windows.h>
 //#include<conio.h>
 #include<termios.h>
-void load_map();                     
-int getch(void); 
-void left(int x, int y, int level); 
-void right(int x, int y, int level); 
-void up(int x, int y, int level); 
-void down(int x, int y, int level); 
-void count_check(void); 
-void position(void); 
-void set_storage(void); 
-void pos_storage(void); 
-void print_map(void); 
-void push_key(void); 
-void display_help(void); 
+void load_map();			//맵 받아오기                     
+int getch(void); 			//엔터 없이 입력
+void left(int x, int y, int level); 	//왼
+void right(int x, int y, int level); 	//오
+void up(int x, int y, int level); 	//위
+void down(int x, int y, int level); 	//아래
+void count_check(void); 		//상자, 보관장소
+void position(void); 			//@ 좌표잡기
+void set_storage(void); 		//보관장소 놓기
+void pos_storage(void); 		//보관장소 좌표
+void print_map(void); 			//맵 출력
+void push_key(void); 			// 키 입력
+void display_help(void); 		//도움말
 
-char map[30][30][6] = { 0 };
-int cnt = 0;
-int level=1;
-int pos_x, pos_y, cnt_O=0, cnt_$=0;
-int stor_x[20]={0},stor_y[20]={0};
-int key;
+char map[30][30][6] = { 0 };		//맵 배열
+int cnt = 0;				//이동횟수
+int level=1;				//레벨
+int pos_x, pos_y, cnt_O=0, cnt_$=0;	//@ 좌표 및 상자, 보관장소 개수
+int stor_x[20]={0},stor_y[20]={0};	//보관장소 좌표 배열
+int key;				//입력 받는 키
 
 int main(){
 	int i, j;
 	load_map();
-	while(1){  
-		system("clear");
+	while(1){  			//게임시작
+	    system("clear");
 		count_check();
 		if(cnt_O!=cnt_$){
 			printf("Mismatch between box and storage count.\n"); 
 			return 0;
 		}
 		pos_storage();
-		while(1){  
+		while(1){  		//게임 진행
 			position();
 			print_map();
 			
