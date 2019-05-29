@@ -23,6 +23,10 @@ int main(){
 	while(1){
 		system("clear");
 		count_check();
+		if(cnt_O!=cnt_$){
+			printf("Mismatch between box and storage count.\n");
+			return 0;
+		}
 		while(1){
 			position();
 			printf("stage");
@@ -212,11 +216,6 @@ void count_check(void){
 			if(map[i][j][level]=='O') cnt_O++;
 			if(map[i][j][level]=='$') cnt_$++;
 		}
-	}
-
-	if(cnt_O!=cnt_$){
-		printf("Mismatch between box and storage count.\n");
-		return 0;
 	}
 }
 
