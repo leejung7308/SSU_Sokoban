@@ -12,15 +12,20 @@ void down(int x, int y, int level);
 void count_check(void);
 void position(void);
 void set_storage(void);
+void pos_storage(void);
 void print_map(void);
+void push_key(void);
+void display_help(void);
 
 char map[30][30][6] = { 0 };
 int cnt = 0;
 int level=1;
 int pos_x, pos_y, cnt_O=0, cnt_$=0;
+int stor_x[20]={0},stor_y[20]={0};
+int key;
 
 int main(){
-	int i, j, key;
+	int i, j;
 	load_map();
 	while(1){
 		system("clear");
@@ -29,48 +34,15 @@ int main(){
 			printf("Mismatch between box and storage count.\n");
 			return 0;
 		}
+		pos_storage();
 		while(1){
 			position();
-			set_storage();
 			print_map();
 			
 			printf("COUNT : %d\n", cnt);
-			printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
-            key = getch();
-
-            switch (key)
-            {
-	            case 104:
-					left(pos_x,pos_y,level);            //left
-	                break;
-	            case 108:
-					right(pos_x,pos_y,level);           //right
-	                break;
-	            case 107:
-					up(pos_x,pos_y,level);              //up
-	                break;
-	            case 106:
-					down(pos_x,pos_y,level);            //down
-	                break;
-	            case 117:             //undo
-	                break;
-	            case 114:             //replay
-	                break;
-	            case 110:             //new
-	                break;
-	            case 101:             //exit
-	                break;
-	            case 115:             //save
-	                break;
-	            case 102:             //file load
-	                break;
-	            case 100:             //display help
-	                break;
-	            case 116:             //top
-	                break;
-	            default:
-	                break;
-            }
+			//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
+            push_key();
+            set_storage();
 			system("clear");
 		}
 	}
@@ -213,9 +185,8 @@ void count_check(void){
 		}
 	}
 }
-void set_storage(void){
+void pos_storage(void){
 	int i,j,k=0;
-	int stor_x[cnt_O]={0},stor_y[cnt_O]={0};
 	for(i=0; i<30; i++){
 		for(j=0; j<30; j++){
 			if(map[i][j][level]=='O'){
@@ -225,8 +196,12 @@ void set_storage(void){
 			} 
 		}
 	}
-	for(i=0; i<k; i++){
-		if(map[stor_y[i]][stor_x[i]][level]!='@' && map[stor_y[i]][stor_x[i]][level]!='$') map[stor_y[i]][stor_x[i]][level]='O';
+}
+void set_storage(void){
+	int i;
+	for(i=0; i<cnt_O; i++){
+		//printf("%d %d\n",stor_x[i],stor_y[i]);
+		if(map[stor_y[i]][stor_x[i]][level]=='.') map[stor_y[i]][stor_x[i]][level]='O';
 	}
 }
 void print_map(void){
@@ -240,6 +215,70 @@ void print_map(void){
 		}
 		printf("\n");
 		if(end[0]==0) break;
+	}
+}
+void push_key(void){
+	key = getch();
+
+        switch (key)
+        {
+            case 104:
+                left(pos_x,pos_y,level);            //left
+                break;
+            case 108:
+                right(pos_x,pos_y,level);           //right
+                break;
+            case 107:
+                up(pos_x,pos_y,level);              //up
+                break;
+            case 106:
+                down(pos_x,pos_y,level);            //down
+                break;
+            case 117:             //undo
+                break;
+            case 114:             //replay
+                break;
+            case 110:             //new
+                break;
+            case 101:             //exit
+                break;
+            case 115:             //save
+                break;
+            case 102:             //file load
+                break;
+            case 100:             //display help
+		display_help();
+                break;
+            case 116:             //top
+                break;
+            default:
+                break;
+        }
+}
+void display_help(void){
+	system("clear");
+
+        printf("============도움말============\n");
+	printf("h : 왼쪽, j : 아래, k : 위, l : 오른쪽\n");
+	printf("u(undo) : 되돌리기(5번 가능)\n");
+  	printf("r(replay) : 현재 맵을 처음부터 다시 시작\n");
+	printf("n(new) : 첫 번째 맵부터 다시 시작\n");
+	printf("e(exit) : 현재 게임 저장 후 종료\n");
+	printf("s(save) : 현재 게임 저장\n");
+	printf("f(file load) : 저장 시점부터 이어서 게임 시작\n");
+	printf("t(top) : 게임 순위, t만 입력시 전체 순위, t + 맵숫자 입력시 해당 맵의 순위\n\n\n\n");
+	printf("d를 한번 더 누르시면 게임 화면으로 돌아갑니다.\n");
+
+	while(1){
+	    key = getch();
+
+	    switch (key)
+	    {
+            case 100:
+		    	return;
+			default:
+		    	break;
+	    }
 	}
 }
 
