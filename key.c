@@ -1,41 +1,30 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<Windows.h>
-#include<conio.h>
+//#include<conio.h>
+#include<termios.h>
 void load_map();
-//int getch(void);
+int getch(void);
 void left(int x, int y, int level);
 void right(int x, int y, int level);
 void up(int x, int y, int level);
 void down(int x, int y, int level);
+void count_check(void);
+void position(void);
 
 char map[30][30][6] = { 0 };
 int cnt = 0;
 int level=1;
+int pos_x, pos_y, cnt_O=0, cnt_$=0;
 
 int main(){
-	int pos_x, pos_y, cnt_O=0, cnt_$=0, i, j, key;
+	int i, j, key;
 	load_map();
 	while(1){
 		system("clear");
-		for(i=0; i<30; i++){
-			for(j=0; j<30; j++){
-				if(map[i][j][level]=='@'){
-					pos_x=j;
-					pos_y=i;
-				}
-				if(map[i][j][level]=='O') cnt_O++;
-				if(map[i][j][level]=='$') cnt_$++;
-			}
-		}
-
-                printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
-
-		if(cnt_O!=cnt_$){
-			printf("Mismatch between box and storage count.\n");
-			return 0;
-		}
+		count_check();
 		while(1){
+			position();
 			printf("stage");
 			for(i=0; i<30; i++){
 				char end[30]={0};
@@ -47,6 +36,7 @@ int main(){
 				if(end[0]==0) break;
 			}
 			printf("COUNT : %d\n", cnt);
+			printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);
             key = getch();
 
             switch (key)
@@ -111,14 +101,8 @@ void load_map(){
 	for(i=1; i<=5; i++){
 		map[0][0][i]=i+48;
 	}
-	for(i=0; i<30; i++){
-		for(j=0; j<30; j++){
-			printf("%c",map[i][j][level]);
-		}
-		printf("\n");
-	}
 }
-/*int getch(void){
+int getch(void){
     int ch;
 
     struct termios buf;
@@ -137,7 +121,7 @@ void load_map(){
     tcsetattr(0, TCSAFLUSH, &save);
 
     return ch;
-}*/
+}
 void left(int x, int y, int level){
 	cnt++;
 	if(map[y][x-1][level]=='#') ;
@@ -210,7 +194,31 @@ void down(int x, int y, int level){
 		}
 	}
 }
+void position(void){
+	int i,j;
+	for(i=0; i<30; i++){
+		for(j=0; j<30; j++){
+			if(map[i][j][level]=='@'){
+				pos_x=j;
+				pos_y=i;
+			}
+		}
+	}
+}
+void count_check(void){
+	int i,j;
+	for(i=0; i<30; i++){
+		for(j=0; j<30; j++){
+			if(map[i][j][level]=='O') cnt_O++;
+			if(map[i][j][level]=='$') cnt_$++;
+		}
+	}
 
+	if(cnt_O!=cnt_$){
+		printf("Mismatch between box and storage count.\n");
+		return 0;
+	}
+}
 
 
 
