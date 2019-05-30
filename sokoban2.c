@@ -18,39 +18,40 @@ void new_start(void);			//새 게임
 void move(int x, int y);		//움직임
 void save_undo(void);
 void undo(void);
+void check_$(void);
+void level_clear(void);
 
 char undo_arr[30][30][5]={0};
 char map[30][30][6]={0};		//맵 배열
 char c_map[30][30]={0};
 int cnt = 0;				//이동횟수
-int level=4;				//레벨
+int level=2;				//레벨
 int pos_x, pos_y, cnt_O=0, cnt_$=0;	//@ 좌표 및 상자, 보관장소 개수
 int stor_x[20]={0},stor_y[20]={0};	//보관장소 좌표 배열
 int key;				//입력 받는 키
 int undo_cnt=5;
+int left_$;
 
 int main(){
 	int i, j;
 	load_map();
-	while(1){  			//게임시작
-	    system("clear");
-	    current_map();
-		count_check();
-		if(cnt_O!=cnt_$){
-			printf("Mismatch between box and storage count.\n"); 
-			return 0;
-		}
-		pos_storage();
-		while(1){  		//게임 진행
-			position();
-			print_map();
-			printf("COUNT : %d\nUndo : %d\n", cnt, undo_cnt);
-			//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);  
-            push_key();
-            save_undo();
-            set_storage();
-			system("clear");
-		}
+	system("clear");
+	current_map();
+	count_check();
+	if(cnt_O!=cnt_$){
+		printf("Mismatch between box and storage count.\n"); 
+		return 0;
+	}
+	pos_storage();
+	while(1){  		//게임 진행
+		position();
+		print_map();
+		printf("COUNT : %d\nUndo : %d\nBox left : %d\n", cnt, undo_cnt,(cnt_$-left_$));
+		check_$();
+		//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);  
+        push_key();
+        set_storage();
+		system("clear");
 	}
 	return 0;	
 }
@@ -106,6 +107,7 @@ void move(int x,int y){
 	else if(key=='k') dy=-1;
 	else dy=1;
 	cnt++;
+	save_undo();
 	if(c_map[y+dy][x+dx]=='#') ;
 	else{
 		if(c_map[y+dy][x+dx]=='$'){
@@ -176,50 +178,49 @@ void print_map(void){
 }
 void push_key(void){
 	key = getch();
-
-        switch (key)
-        {
-            case 104:
-                move(pos_x,pos_y);            //left
-                break;
-            case 108:
-                move(pos_x,pos_y);           //right
-                break;
-            case 107:
-                move(pos_x,pos_y);              //up
-                break;
-            case 106:
-                move(pos_x,pos_y);            //down
-                break;
-            case 117:             //undo
-            	if(undo_cnt>0) undo();
-            	else ;
-                break;
-            case 114:             //replay
-            	restart();
-                break;
-            case 110:             //new
-            	new_start();
-                break;
-            case 101:             //exit
-                break;
-            case 115:             //save
-                break;
-            case 102:             //file load
-                break;
-            case 100:             //display help
-				display_help();
-                break;
-            case 116:             //top
-                break;
-            default:
-                break;
-        }
+    switch (key)
+    {
+        case 104:
+            move(pos_x,pos_y);            //left
+            break;
+        case 108:
+            move(pos_x,pos_y);           //right
+            break;
+        case 107:
+            move(pos_x,pos_y);              //up
+            break;
+        case 106:
+            move(pos_x,pos_y);            //down
+            break;
+        case 117:             //undo
+           	if(undo_cnt>0) undo();
+            else ;
+            break;
+        case 114:             //replay
+            restart();
+            break;
+        case 110:             //new
+            new_start();
+            break;
+        case 101:             //exit
+            break;
+        case 115:             //save
+            break;
+        case 102:             //file load
+            break;
+        case 100:             //display help
+			display_help();
+            break;
+        case 116:             //top
+            break;
+        default:
+            break;
+    }
 }
 void display_help(void){
 	system("clear");
 
-        printf("============도움말============\n");
+    printf("============도움말============\n");
 	printf("h : 왼쪽, j : 아래, k : 위, l : 오른쪽\n");
 	printf("u(undo) : 되돌리기(5번 가능)\n");
   	printf("r(replay) : 현재 맵을 처음부터 다시 시작\n");
@@ -254,9 +255,16 @@ void current_map(void){
 	}
 }
 void new_start(void){
+	int i;
 	level=1;
 	cnt=0;
 	undo_cnt=5;
+	for(i=0; i<20; i++){
+		stor_x[i]=0;
+		stor_y[i]=0;
+	}
+	cnt_O=0;
+	cnt_$=0;
 	main();
 }
 void save_undo(void){
@@ -296,7 +304,7 @@ void undo(void){
 		}
 	}
 	undo_cnt--;
-	for(k=0;k<5;k++){
+	/*for(k=0;k<5;k++){
 		for(i=0;i<30;i++){
 			for(j=0;j<30;j++){
 				printf("%c",undo_arr[i][j][k]);
@@ -305,9 +313,30 @@ void undo(void){
 		}
 		printf("\n");
 	}
-	scanf("%d",&i);
+	scanf("%d",&i);*/
 }
-
+void check_$(void){
+	int i; 
+	left_$=0;
+	for(i=0; i<cnt_O; i++){
+		//printf("%d %d\n",stor_x[i],stor_y[i]);
+		if(c_map[stor_y[i]][stor_x[i]]=='$') left_$++;
+	}
+	printf("%d %d\n",left_$,cnt_$);
+	if(left_$==cnt_$) level_clear();
+}
+void level_clear(void){
+	int i;
+	cnt_O=0,cnt_$=0,cnt=0;
+	undo_cnt=5;
+	for(i=0; i<20; i++){
+		stor_x[i]=0;
+		stor_y[i]=0;
+	}
+	if(level<5) level++;
+	else level=1;
+	main();
+}
 
 
 
