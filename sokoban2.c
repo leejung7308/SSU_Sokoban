@@ -5,10 +5,6 @@
 #include<termios.h>
 void load_map();			//맵 받아오기                     
 int getch(void); 			//엔터 없이 입력
-/*void left(int x, int y); 	//왼
-void right(int x, int y); 	//오
-void up(int x, int y); 	//위
-void down(int x, int y);*/ 	//아래
 void count_check(void); 		//상자, 보관장소
 void position(void); 			//@ 좌표잡기
 void set_storage(void); 		//보관장소 놓기
@@ -16,18 +12,22 @@ void pos_storage(void); 		//보관장소 좌표
 void print_map(void); 			//맵 출력
 void push_key(void); 			// 키 입력
 void display_help(void); 		//도움말'
-void current_map(void);
-void restart(void);
-void new_start(void);
-void move(int x, int y);
+void current_map(void);			//현재 레벨
+void restart(void);			//재시도(현재레벨)
+void new_start(void);			//새 게임
+void move(int x, int y);		//움직임
+void save_undo(void);
+void undo(void);
 
-char map[30][30][6] = { 0 };		//맵 배열
+char undo_arr[30][30][5]={0};
+char map[30][30][6]={0};		//맵 배열
 char c_map[30][30]={0};
 int cnt = 0;				//이동횟수
 int level=4;				//레벨
 int pos_x, pos_y, cnt_O=0, cnt_$=0;	//@ 좌표 및 상자, 보관장소 개수
 int stor_x[20]={0},stor_y[20]={0};	//보관장소 좌표 배열
 int key;				//입력 받는 키
+int undo_cnt=5;
 
 int main(){
 	int i, j;
@@ -44,10 +44,10 @@ int main(){
 		while(1){  		//게임 진행
 			position();
 			print_map();
-			
-			printf("COUNT : %d\n", cnt);
+			printf("COUNT : %d\nUndo : %d\n", cnt, undo_cnt);
 			//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);  
             push_key();
+            save_undo();
             set_storage();
 			system("clear");
 		}
@@ -122,78 +122,6 @@ void move(int x,int y){
 		}
 	}
 }
-/*void left(int x, int y){
-	cnt++;
-	if(c_map[y][x-1]=='#') ;
-	else{
-		if(c_map[y][x-1]=='$'){
-			if(c_map[y][x-2]=='#'||c_map[y][x-2]=='$') ;
-			else{
-				c_map[y][x-2]='$';
-				c_map[y][x-1]='@';
-				c_map[y][x]='.';
-			}
-		}
-		else{
-			c_map[y][x-1]='@';
-			c_map[y][x]='.';
-		}
-	}
-}
-void right(int x, int y){
-	cnt++;
-	if(c_map[y][x+1]=='#') ;
-	else{
-		if(c_map[y][x+1]=='$'){
-			if(c_map[y][x+2]=='#'||c_map[y][x+2]=='$') ;
-			else{
-				c_map[y][x+2]='$';
-				c_map[y][x+1]='@';
-				c_map[y][x]='.';
-			}
-		}
-		else{
-			c_map[y][x+1]='@';
-			c_map[y][x]='.';
-		}
-	}
-}
-void up(int x, int y){
-	cnt++;
-	if(c_map[y-1][x]=='#') ;
-	else{
-		if(c_map[y-1][x]=='$'){
-			if(c_map[y-2][x]=='#'||c_map[y-2][x]=='$') ;
-			else{
-				c_map[y-2][x]='$';
-				c_map[y-1][x]='@';
-				c_map[y][x]='.';
-			}
-		}
-		else{
-			c_map[y-1][x]='@';
-			c_map[y][x]='.';
-		}
-	}
-}
-void down(int x, int y){
-	cnt++;
-	if(c_map[y+1][x]=='#') ;
-	else{
-		if(c_map[y+1][x]=='$'){
-			if(c_map[y+2][x]=='#'||c_map[y+2][x]=='$') ;
-			else{
-				c_map[y+2][x]='$';
-				c_map[y+1][x]='@';
-				c_map[y][x]='.';
-			}
-		}
-		else{
-			c_map[y+1][x]='@';
-			c_map[y][x]='.';
-		}
-	}
-}*/
 void position(void){
 	int i,j;
 	for(i=0; i<30; i++){
@@ -264,6 +192,8 @@ void push_key(void){
                 move(pos_x,pos_y);            //down
                 break;
             case 117:             //undo
+            	if(undo_cnt>0) undo();
+            	else ;
                 break;
             case 114:             //replay
             	restart();
@@ -278,7 +208,7 @@ void push_key(void){
             case 102:             //file load
                 break;
             case 100:             //display help
-		display_help();
+				display_help();
                 break;
             case 116:             //top
                 break;
@@ -326,7 +256,56 @@ void current_map(void){
 void new_start(void){
 	level=1;
 	cnt=0;
+	undo_cnt=5;
 	main();
+}
+void save_undo(void){
+	int i,j,k;
+	/*for(k=0;k<5;k++){
+		for(i=0;i<30;i++){
+			for(j=0;j<30;j++){
+				undo_arr[i][j][k]=map[i][j][level];
+			}
+		}
+	}*/
+	for(k=3;k>-1;k--){
+		for(i=0;i<30;i++){
+			for(j=0;j<30;j++){
+				undo_arr[i][j][k+1]=undo_arr[i][j][k];
+			}
+		}
+	}
+	for(i=0;i<30;i++){
+		for(j=0;j<30;j++){
+			undo_arr[i][j][0]=c_map[i][j];
+		}
+	}	
+}
+void undo(void){
+	int i,j,k;
+	for(i=0;i<30;i++){
+		for(j=0;j<30;j++){
+			c_map[i][j]=undo_arr[i][j][0];
+		}
+	}
+	for(k=0;k<4;k++){
+		for(i=0;i<30;i++){
+			for(j=0;j<30;j++){
+				undo_arr[i][j][k]=undo_arr[i][j][k+1];
+			}
+		}
+	}
+	undo_cnt--;
+	for(k=0;k<5;k++){
+		for(i=0;i<30;i++){
+			for(j=0;j<30;j++){
+				printf("%c",undo_arr[i][j][k]);
+			}
+			printf("\n");
+		}
+		printf("\n");
+	}
+	scanf("%d",&i);
 }
 
 
