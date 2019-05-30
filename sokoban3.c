@@ -61,6 +61,11 @@ int main(){
 		check_$();
 		//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);  
         push_key();
+        if(key=='e'){
+        	system("clear");
+        	printf("SEE YOU ....\n");
+        	return 0;
+		}
         set_storage();
 		system("clear");
 	}
@@ -214,6 +219,7 @@ void push_key(void){
             new_start();
             break;
         case 101:             //exit
+        	save_file();
             break;
         case 115:             //save
 	    	save_file();
