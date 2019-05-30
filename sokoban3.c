@@ -30,7 +30,7 @@ char save_map[30][30]={0};
 char map[30][30][6]={0};		//맵 배열
 char c_map[30][30]={0};
 int cnt = 0;				//이동횟수
-int level=2;				//레벨
+int level=1;				//레벨
 int pos_x, pos_y, cnt_O=0, cnt_$=0;	//@ 좌표 및 상자, 보관장소 개수
 int stor_x[20]={0},stor_y[20]={0};	//보관장소 좌표 배열
 int key;				//입력 받는 키
@@ -166,7 +166,7 @@ void pos_storage(void){
 	int i,j,k=0;
 	for(i=0; i<30; i++){
 		for(j=0; j<30; j++){
-			if(c_map[i][j]=='O'){
+			if(map[i][j][level]=='O'){
 				stor_x[k]=j;
 				stor_y[k]=i;
 				k++;
@@ -343,7 +343,7 @@ void check_$(void){
 		//printf("%d %d\n",stor_x[i],stor_y[i]);
 		if(c_map[stor_y[i]][stor_x[i]]=='$') left_$++;
 	}
-	printf("%d %d\n",left_$,cnt_$);
+	//printf("%d %d\n",left_$,cnt_$);
 	if(left_$==cnt_$) level_clear();
 }
 void level_clear(void){
@@ -360,15 +360,20 @@ void level_clear(void){
 }
 void save_file(void){
 	FILE*f;
-	f = fopen("sokoban.txt", "wt");
-	fprintf(f, "%d\n%d\n%d\n%d\n%d", level,cnt,undo_cnt,cnt_$,cnt_O);
-	fclose(f);
 	int i,j;
+	f = fopen("sokoban.txt", "wt");
 	for(i=0;i<30;i++){
 		for(j=0;j<30;j++){
 			save_map[i][j]=c_map[i][j];
 		}
 	}
+	for(i=0;i<30;i++){
+		for(j=0;j<30;j++){
+			fprintf(f,"%c",save_map[i][j]);
+		}
+	}
+	fprintf(f, "\n%d\n%d\n%d\n%d\n%d\n", level,cnt,undo_cnt,cnt_$,cnt_O);
+	fclose(f);
 	return ;
 }
 void load_file(void){
@@ -376,6 +381,11 @@ void load_file(void){
 	int i, j, k;
 	int a[5]={0};
 	f=fopen("sokoban.txt","r");
+	for(i=0; i<30; i++){
+		for(j=0; j<30; j++){
+			fscanf(f,"%c",&save_map[i][j]);
+		}
+	}
 	for(i=0; i<5; i++){
 		fscanf(f,"%d",&a[i]);
 	}
@@ -396,6 +406,7 @@ void load_file(void){
 			}
 		}
 	}
+	pos_storage();
 	return ;
 }
 
