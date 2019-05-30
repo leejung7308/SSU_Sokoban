@@ -1,0 +1,5 @@
+stage2
+COUNT : 9
+Undo : 3
+Box left : 10
+0 10

@@ -21,6 +21,8 @@ void undo(void);
 void check_$(void);
 void level_clear(void);
 void save_file(void);
+void save_map(void);
+void file_load(void);
 
 char undo_arr[30][30][5]={0};
 char map[30][30][6]={0};		//맵 배열
@@ -51,6 +53,8 @@ int main(){
 		check_$();
 		//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);  
         push_key();
+	if (key == 's')
+		return 0;
         set_storage();
 		system("clear");
 	}
@@ -178,7 +182,7 @@ void print_map(void){
 	}
 }
 void push_key(void){
-	key = getch();
+    key = getch();
     switch (key)
     {
         case 104:
@@ -194,7 +198,7 @@ void push_key(void){
             move(pos_x,pos_y);            //down
             break;
         case 117:             //undo
-           	if(undo_cnt>0) undo();
+            if(undo_cnt>0) undo();
             else ;
             break;
         case 114:             //replay
@@ -206,11 +210,12 @@ void push_key(void){
         case 101:             //exit
             break;
         case 115:             //save
+	    save_file();
             break;
         case 102:             //file load
             break;
         case 100:             //display help
-			display_help();
+	    display_help();
             break;
         case 116:             //top
             break;
@@ -221,7 +226,7 @@ void push_key(void){
 void display_help(void){
 	system("clear");
 
-    printf("============도움말============\n");
+        printf("============도움말============\n");
 	printf("h : 왼쪽, j : 아래, k : 위, l : 오른쪽\n");
 	printf("u(undo) : 되돌리기(5번 가능)\n");
   	printf("r(replay) : 현재 맵을 처음부터 다시 시작\n");
@@ -237,10 +242,10 @@ void display_help(void){
 
 	    switch (key)
 	    {
-            case 100:
-		    	return;
-			default:
-		    	break;
+                case 100:
+		    return;
+		default:
+		    break;
 	    }
 	}
 }
@@ -337,6 +342,17 @@ void level_clear(void){
 	if(level<5) level++;
 	else level=1;
 	main();
+}
+void save_file(void){
+	FILE*f;
+	f = fopen("sokoban.txt", "wt");
+	fprintf(f, "stage%d\n", level);
+	fprintf(f, "COUNT : %d\n", cnt);
+	fprintf(f, "Undo : %d\n", undo_cnt);
+	fprintf(f, "Box left : %d\n", (cnt_$-left_$));
+	fprintf(f, "%d %d\n", left_$, cnt_$);
+	fclose(f);
+	return;
 }
 
 
