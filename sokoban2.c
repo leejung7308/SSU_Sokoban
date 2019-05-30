@@ -20,6 +20,7 @@ void save_undo(void);
 void undo(void);
 void check_$(void);
 void level_clear(void);
+void save_file(void);
 
 char undo_arr[30][30][5]={0};
 char map[30][30][6]={0};		//맵 배열
@@ -58,7 +59,7 @@ int main(){
 
 void load_map(){
 	int i,j;
-	FILE *f=fopen("map","r");
+	FILE *f=fopen("map.txt","r");
 	char a;
 	int x=0, y=0, z=0;
 	while(fscanf(f,"%c",&a)!=EOF){
