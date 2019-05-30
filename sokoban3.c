@@ -23,6 +23,7 @@ void level_clear(void);			//클리어
 void save_file(void);			//세이브/
 void load_file(void);			//로드
 void set_undo(void);
+char wyn(void);
 
 char undo_arr[30][30][5]={0};
 char save_map[30][30]={0};
@@ -38,6 +39,7 @@ int left_$;
 
 int main(){
 	int i, j, k;
+	wyn();
 	load_map();
 	for(k=0;k<5;k++){
 		for(i=0;i<30;i++){
@@ -398,4 +400,23 @@ void load_file(void){
 }
 
 
+char wyn()
+{int i;
+	char name;
+	char name1[100];
+	printf("What's your name?");
+	scanf("%s", name1);
+//	if (name1)
+	for(i=0; i<100; i++)
+	{
+		if (name1[i]==NULL)
+		{//int i=length;
+		if(i<=10)
+			char name1=name;
+		else 
+			printf("Enter your name under 10 letters.");
+			break;
+		}
+	}
 
+}
