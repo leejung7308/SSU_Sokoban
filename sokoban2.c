@@ -38,7 +38,7 @@ int left_$;
 int main(){
 	int i, j;
 	load_map();
-	system("clear");
+        system("clear");
 	current_map();
 	count_check();
 	if(cnt_O!=cnt_$){
@@ -53,7 +53,7 @@ int main(){
 		check_$();
 		//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);  
         push_key();
-	if (key == 's')
+	if (key == 'e')
 		return 0;
         set_storage();
 		system("clear");
@@ -345,11 +345,9 @@ void level_clear(void){
 }
 void save_file(void){
 	FILE*f;
-	f = fopen("sokoban.txt", "wt");
+	f = fopen("sokoban.txt", "w");
 	fprintf(f, "stage%d\n", level);
 	fprintf(f, "COUNT : %d\n", cnt);
-	fprintf(f, "Undo : %d\n", undo_cnt);
-	fprintf(f, "Box left : %d\n", (cnt_$-left_$));
 	fprintf(f, "%d %d\n", left_$, cnt_$);
 	fclose(f);
 	return;
