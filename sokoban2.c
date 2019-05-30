@@ -16,13 +16,13 @@ void current_map(void);			//현재 레벨
 void restart(void);			//재시도(현재레벨)
 void new_start(void);			//새 게임
 void move(int x, int y);		//움직임
-void save_undo(void);
-void undo(void);
-void check_$(void);
-void level_clear(void);
-void save_file(void);
-void save_map(void);
-void file_load(void);
+void save_undo(void);			//undo 배열 저장
+void undo(void);			//undo
+void check_$(void);			//보관장소에 상자 몇개 들어갔는지
+void level_clear(void);			//클리어
+void save_file(void);			//세이브
+void save_map(void);			//
+void file_load(void);			//로드
 
 char undo_arr[30][30][5]={0};
 char map[30][30][6]={0};		//맵 배열
