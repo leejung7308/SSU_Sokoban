@@ -32,7 +32,7 @@ int level=2;				//레벨
 int pos_x, pos_y, cnt_O=0, cnt_$=0;	//@ 좌표 및 상자, 보관장소 개수
 int stor_x[20]={0},stor_y[20]={0};	//보관장소 좌표 배열
 int key;				//입력 받는 키
-int undo_cnt=5;
+int undo_cnt=5;			//
 int left_$;
 
 int main(){
