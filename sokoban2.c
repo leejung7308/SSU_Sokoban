@@ -20,11 +20,12 @@ void save_undo(void);			//undo 배열 저장
 void undo(void);			//undo
 void check_$(void);			//보관장소에 상자 몇개 들어갔는지
 void level_clear(void);			//클리어
-void save_file(void);			//세이브
-void save_map(void);			//
-void file_load(void);			//로드
+void save_file(void);			//세이브/
+void load_file(void);			//로드
+void set_undo(void);
 
 char undo_arr[30][30][5]={0};
+char save_map[30][30]={0};
 char map[30][30][6]={0};		//맵 배열
 char c_map[30][30]={0};
 int cnt = 0;				//이동횟수
@@ -36,8 +37,15 @@ int undo_cnt=5;			//
 int left_$;
 
 int main(){
-	int i, j;
+	int i, j, k;
 	load_map();
+	for(k=0;k<5;k++){
+		for(i=0;i<30;i++){
+			for(j=0;j<30;j++){
+				undo_arr[i][j][k]=map[i][j][level];
+			}
+		}
+	}
 	system("clear");
 	current_map();
 	count_check();
@@ -53,8 +61,6 @@ int main(){
 		check_$();
 		//printf("%d %d\n%d %d\n",cnt_O,cnt_$,pos_x,pos_y);  
         push_key();
-	if (key == 's')
-		return 0;
         set_storage();
 		system("clear");
 	}
@@ -210,9 +216,10 @@ void push_key(void){
         case 101:             //exit
             break;
         case 115:             //save
-	    save_file();
+	    	save_file();
             break;
         case 102:             //file load
+        	load_file();
             break;
         case 100:             //display help
 	    display_help();
@@ -346,13 +353,42 @@ void level_clear(void){
 void save_file(void){
 	FILE*f;
 	f = fopen("sokoban.txt", "wt");
-	fprintf(f, "stage%d\n", level);
-	fprintf(f, "COUNT : %d\n", cnt);
-	fprintf(f, "Undo : %d\n", undo_cnt);
-	fprintf(f, "Box left : %d\n", (cnt_$-left_$));
-	fprintf(f, "%d %d\n", left_$, cnt_$);
+	fprintf(f, "%d\n%d\n%d\n%d\n%d", level,cnt,undo_cnt,cnt_$,cnt_O);
 	fclose(f);
-	return;
+	int i,j;
+	for(i=0;i<30;i++){
+		for(j=0;j<30;j++){
+			save_map[i][j]=c_map[i][j];
+		}
+	}
+	return ;
+}
+void load_file(void){
+	FILE*f;
+	int i, j, k;
+	int a[5]={0};
+	f=fopen("sokoban.txt","r");
+	for(i=0; i<5; i++){
+		fscanf(f,"%d",&a[i]);
+	}
+	level=a[0];
+	cnt=a[1];
+	undo_cnt=a[2];
+	cnt_$=a[3];
+	cnt_O=a[4];
+	for(i=0;i<30;i++){
+		for(j=0;j<30;j++){
+			c_map[i][j]=save_map[i][j];
+		}
+	}
+	for(k=0;k<5;k++){
+		for(i=0;i<30;i++){
+			for(j=0;j<30;j++){
+				undo_arr[i][j][k]=c_map[i][j];
+			}
+		}
+	}
+	return ;
 }
 
 
