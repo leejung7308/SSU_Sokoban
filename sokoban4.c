@@ -26,10 +26,12 @@ void set_undo(void);
 void input_name(void);
 
 char name[100]={0};
+char rank_name[10][6][5]={0};
 char undo_arr[30][30][5]={0};
 char save_map[30][30]={0};
 char map[30][30][6]={0};		//맵 배열
 char c_map[30][30]={0};
+int rank_cnt[6][5]={0};
 int cnt = 0;				//이동횟수
 int level=1;				//레벨
 int pos_x, pos_y, cnt_O=0, cnt_$=0;	//@ 좌표 및 상자, 보관장소 개수
@@ -357,12 +359,28 @@ void check_$(void){
 }
 void level_clear(void){
 	int i, j, k;
-	cnt_O=0,cnt_$=0,cnt=0;
+	cnt_O=0,cnt_$=0;
 	undo_cnt=5;
 	for(i=0; i<20; i++){
 		stor_x[i]=0;
 		stor_y[i]=0;
 	}
+	if(rank_cnt[0][level-1]==0){
+		rank_cnt[0][level-1]=cnt;
+		for(i=0; i<10; i++)
+			rank_name[i][0][level-1]=name[i];
+	}
+	else{
+		rank_cnt[6][level-1]=cnt;
+		for(i=0; i<10; i++)
+			rank_name[i][6][level-1]=name[i];
+	}
+	for(i=0; i<10; i++){
+		printf("%c",rank_name[i][0][level-1]);
+	}
+	printf(" : %d\n",rank_cnt[0][level-1]);
+	Sleep(1000);
+	cnt=0;
 	if(level<5) level++;
 	else level=1;
 	main();
