@@ -25,6 +25,8 @@ void load_file(void);			//로드
 void set_undo(void);
 void input_name(void);
 void rank_save(void);
+void rank_file(void);
+void rank_view(void);
 
 char name[100]={0};
 char rank_name[10][6][5]={0};
@@ -204,51 +206,56 @@ void print_map(void){
 	}
 }
 void push_key(void){
-    key = getch();
-    switch (key)
-    {
-        case 104:
-            move(pos_x,pos_y);            //left
-            break;
-        case 108:
-            move(pos_x,pos_y);           //right
-            break;
-        case 107:
-            move(pos_x,pos_y);              //up
-            break;
-        case 106:
-            move(pos_x,pos_y);            //down
-            break;
-        case 117:             //undo
-            if(undo_cnt>0) undo();
-            else ;
-            break;
-        case 114:             //replay
-            restart();
-            break;
-        case 110:             //new
-            new_start();
-            break;
-        case 101:             //exit
-        	save_file();
-            break;
-        case 115:             //save
-	    	save_file();
-            break;
-        case 102:             //file load
-        	load_file();
-            break;
-        case 100:             //display help
-	    display_help();
-            break;
-        case 116:             //top
-            break;
-        case '1':
-        	level_clear();
-        	break;
-        default:
-            break;
-    }
+	/*scanf("%s", &key);
+	if (key == 't'){
+	    rank_view();
+	    return ;
+	}
+	else{*/
+            key = getch();
+            switch (key)
+            {
+                case 104:
+                    move(pos_x,pos_y);            //left
+                    break;
+                case 108:
+                    move(pos_x,pos_y);           //right
+                    break;
+                case 107:
+                    move(pos_x,pos_y);              //up
+                    break;
+                case 106:
+                    move(pos_x,pos_y);            //down
+                    break;
+                case 117:             //undo
+                    if(undo_cnt>0) undo();
+                    else ;
+                    break;
+                case 114:             //replay
+                    restart();
+                    break;
+                case 110:             //new
+                    new_start();
+                    break;
+                case 101:             //exit
+                    save_file();
+                    break;
+                case 115:             //save
+	            save_file();
+                    break;
+                case 102:             //file load
+            	    load_file();
+                    break;
+                case 100:             //display help
+	            display_help();
+                    break;
+                case '1':
+           	    level_clear();
+           	    break;
+                default:
+                    break;
+            }
+	//}
 }
 void display_help(void){
 	system("clear");
@@ -359,6 +366,7 @@ void check_$(void){
 	if(left_$==cnt_$) level_clear();
 }
 void level_clear(void){
+	rank_file();
 	int i, j, k;
 	cnt_O=0,cnt_$=0;
 	undo_cnt=5;
@@ -379,7 +387,7 @@ void level_clear(void){
 	cnt=0;
 	rank_save();
 	if(level<5) level++;
-	else level=1;
+	else  level=1;
 	main();
 }
 void save_file(void){
@@ -461,4 +469,32 @@ void rank_save(void){
 		}
 	}
 	fclose(f);
+void rank_file(void){
+	FILE*f;
+	f = fopen("ranking.txt", "a");
+        fprintf(f, "%d %s\n", cnt, name);
+	fclose(f);
+	return ;
+}
+void rank_view(void){
+	int last_cnt;
+	last_cnt = cnt;
+	system("clear");
+
+	FILE*f;
+	f = fopen("ranking.txt", "r");
+	fscanf(f, "%d %s\n", &last_cnt, &name);
+	printf("%d %s\n", last_cnt, name);
+        fclose(f);
+
+	while(1){
+	    key = getch();
+
+	    switch(key){
+	        case 116:
+	    	    return;
+		default:
+		    break;
+	    }
+	}
 }
