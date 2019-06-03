@@ -1,0 +1,17 @@
+void load_name(void)
+{
+	int pre_cnt[5];
+	int i, j;	
+	char pre_name[10];	
+	FILE*f;
+	f=fopen("ranking.txt", "r");
+	char a;
+	if (a>=48&&a<=57)
+		fscanf(f, "%d", &pre_cnt[i]);
+	else if(a>=65&&a<=90 || a>=97&&a<=122)
+		fscanf(f, "%s", &pre_name[j]);
+	else
+	;
+
+
+}
