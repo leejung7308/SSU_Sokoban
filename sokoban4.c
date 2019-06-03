@@ -248,9 +248,6 @@ void push_key(void){
                 case 100:             //display help
 	            display_help();
                     break;
-		case (116) (13):
-		    rank_view();
-		    break;
                 case '1':
            	    level_clear();
            	    break;
