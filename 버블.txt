@@ -1,0 +1,41 @@
+void bubble_sort(void){
+	int i, j, k, l, temp, tname[10];
+	for(k=0; k<5; k++){	
+		for(i=0; i<5; i++){
+			for(j=0; j<5; j++){
+				if(rank_name[0][j][k]!=0 && rank_name[0][j+1][k]==0) break;
+				else if(rank_name[0][j][k]==0 && rank_name[0][j+1][k]!=0){
+					temp=rank_cnt[j][k];
+					rank_cnt[j][k]=rank_cnt[j+1][k];
+					rank_cnt[j+1][k]=temp;
+					for(l=0; l<10; l++){
+						tname[l]=rank_name[l][j][k];
+					}
+					for(l=0; l<10; l++){
+						rank_name[l][j][k]=rank_name[l][j+1][k];
+					}
+					for(l=0; l<10; l++){
+						rank_name[l][j+1][k]=tname[l];
+					}
+				}
+				else if(rank_name[0][j][k]!=0 && rank_name[0][j+1][k]!=0){
+					if(rank_cnt[j][k]>rank_cnt[j+1][k]){
+						temp=rank_cnt[j][k];
+						rank_cnt[j][k]=rank_cnt[j+1][k];
+						rank_cnt[j+1][k]=temp;
+						for(l=0; l<10; l++){
+							tname[l]=rank_name[l][j][k];
+						}
+						for(l=0; l<10; l++){
+							rank_name[l][j][k]=rank_name[l][j+1][k];
+						}
+						for(l=0; l<10; l++){
+							rank_name[l][j+1][k]=tname[l];
+						}
+					}
+				}
+				else if(rank_name[0][j][k]==0 && rank_name[0][j+1][k]==0) break;
+			}
+		}
+	}
+}
