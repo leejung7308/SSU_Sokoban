@@ -470,6 +470,8 @@ void rank_save(void){
 		}
 	}
 	fclose(f);
+}
+
 void rank_file(void){
 	FILE*f;
 	f = fopen("ranking.txt", "a");
