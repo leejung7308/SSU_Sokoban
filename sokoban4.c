@@ -27,6 +27,7 @@ void input_name(void);
 void rank_save(void);
 void rank_file(void);
 void rank_view(void);
+void bubble_sort(void);
 
 char name[100]={0};
 char rank_name[10][6][5]={0};
@@ -496,5 +497,46 @@ void rank_view(void){
 		default:
 		    break;
 	    }
+	}
+}
+void bubble_sort(void){
+	int i, j, k, l, temp, tname[10];
+	for(k=0; k<5; k++){
+		for(i=0; i<5; i++){
+			for(j=0; j<5; j++){
+				if(rank_name[0][j][k]!=0 && rank_name[0][j+1][k]==0) break;
+				else if(rank_name[0][j][k]==0 && rank_name[0][j+1][k]!=0){
+					temp=rank_cnt[j][k];
+					rank_cnt[j][k]=rank_cnt[j+1][k];
+					rank_cnt[j+1][k]=temp;
+					for(l=0; l<10; l++){
+						tname[l]=rank_name[l][j][k];
+					}
+					for(l=0; l<10; l++){
+						rank_name[l][j][k]=rank_name[l][j+1][k];
+					}
+					for(l=0; l<10; l++){
+						rank_name[l][j+1][k]=tname[l];
+					}
+				}
+				else if(rank_name[0][j][k]!=0 && rank_name[0][j+1][k]!=0){
+					if(rank_cnt[j][k]>rank_cnt[j+1][k]){
+						temp=rank_cnt[j][k];
+						rank_cnt[j][k]=rank_cnt[j+1][k];
+						rank_cnt[j+1][k]=temp;
+						for(l=0; l<10; l++){
+							tname[l]=rank_name[l][j][k];
+						}
+						for(l=0; l<10; l++){
+							rank_name[l][j][k]=rank_name[l][j+1][k];
+						}
+						for(l=0; l<10; l++){
+							rank_name[l][j+1][k]=tname[l];
+						}
+					}
+				}
+				else if(rank_name[0][j][k]==0 && rank_name[0][j+1][k]==0) break;
+			}
+		}
 	}
 }
