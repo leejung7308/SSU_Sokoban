@@ -1,0 +1,102 @@
+void push_key(void){
+        key = getch();
+
+        if (key == 't'){
+            key = getch();
+            if (key == '\n'){
+                rank_view();
+                return ;
+            }
+            else if (key == '1'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '2'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '3'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '4'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '5'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+        }
+        else if (key == 'h'){
+            move(pos_x,pos_y);            //left
+            return ;
+        }
+        else if (key == 'l'){
+            move(pos_x,pos_y);           //right
+            return ;
+        }
+        else if (key == 'k'){
+            move(pos_x,pos_y);              //up
+            return ;
+        }
+        else if (key == 'j'){
+            move(pos_x,pos_y);            //down
+            return ;
+        }
+        else if (key == 'u'){             //undo
+            if(undo_cnt>0) undo();
+            else ;
+            return ;
+        }
+        else if (key == 'r'){             //replay
+            restart();
+            return ;
+        }
+        else if (key == 'n'){             //new
+            new_start();
+            return ;
+        }
+        else if (key == 'e'){             //exit
+            save_file();
+            return ;
+        }
+        else if (key == 's'){             //save
+            save_file();
+            return ;
+        }
+        else if (key == 'f'){             //file load
+            load_file();
+            return ;
+        }
+        else if (key == 'd'){            //display help
+            display_help();
+            return ;
+        }
+        else if (key == '1'){
+            level_clear();
+            return ;
+        }
+        else
+            return ;
+}
