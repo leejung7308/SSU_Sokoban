@@ -28,6 +28,7 @@ void rank_save(void);
 void rank_file(void);
 void rank_view(void);
 void bubble_sort(void);
+void load_name(void);
 
 char name[100]={0};
 char rank_name[10][6][5]={0};
@@ -45,6 +46,7 @@ int undo_cnt=5;			//
 int left_$;
 
 int main(){
+	load_name();
 	int i, j, k;
 	if(name[0]==0)
 		input_name();
@@ -541,4 +543,15 @@ void bubble_sort(void){
 			}
 		}
 	}
+}
+void load_name(void)
+{
+int cnt[30], pre_cnt;
+char pre_name;
+FILE*f;
+f=fopen("ranking.txt", "r");
+fscanf(f, "%d %s\n", &pre_cnt, &pre_name);
+name[30]=pre_name;
+cnt[30]=pre_cnt;
+
 }
