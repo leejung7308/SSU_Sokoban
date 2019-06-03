@@ -24,6 +24,7 @@ void save_file(void);			//세이브/
 void load_file(void);			//로드
 void set_undo(void);
 void input_name(void);
+void rank_save(void);
 
 char name[100]={0};
 char rank_name[10][6][5]={0};
@@ -375,12 +376,8 @@ void level_clear(void){
 		for(i=0; i<10; i++)
 			rank_name[i][6][level-1]=name[i];
 	}
-	for(i=0; i<10; i++){
-		printf("%c",rank_name[i][0][level-1]);
-	}
-	printf(" : %d\n",rank_cnt[0][level-1]);
-	Sleep(1000);
 	cnt=0;
+	rank_save();
 	if(level<5) level++;
 	else level=1;
 	main();
@@ -450,4 +447,18 @@ void input_name(void)
 			Sleep(500);
 		}
 	}
+}
+void rank_save(void){
+	int i, j, k;
+	FILE*f=fopen("ranking.txt","wt");
+	for(k=1; k<6; k++){	
+		fprintf(f,"map%d\n",k);
+		for(i=0; i<5; i++){
+			for(j=0; j<10; j++){
+				fprintf(f,"%c",rank_name[j][i][k-1]);
+			}
+			fprintf(f,"\t%d\n",rank_cnt[i][k-1]);
+		}
+	}
+	fclose(f);
 }
