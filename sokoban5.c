@@ -25,10 +25,8 @@ void load_file(void);			//로드
 void set_undo(void);
 void input_name(void);
 void rank_save(void);
-void rank_file(void);
-void rank_view(void);
 void bubble_sort(void);
-void load_name(void);
+void rank_view(void);
 
 char name[100]={0};
 char rank_name[10][6][5]={0};
@@ -46,7 +44,6 @@ int undo_cnt=5;			//
 int left_$;
 
 int main(){
-	load_name();
 	int i, j, k;
 	if(name[0]==0)
 		input_name();
@@ -209,56 +206,106 @@ void print_map(void){
 	}
 }
 void push_key(void){
-	/*scanf("%s", &key);
-	if (key == 't'){
-	    rank_view();
-	    return ;
-	}
-	else{*/
+        key = getch();
+
+        if (key == 't'){
             key = getch();
-            switch (key)
-            {
-                case 104:
-                    move(pos_x,pos_y);            //left
-                    break;
-                case 108:
-                    move(pos_x,pos_y);           //right
-                    break;
-                case 107:
-                    move(pos_x,pos_y);              //up
-                    break;
-                case 106:
-                    move(pos_x,pos_y);            //down
-                    break;
-                case 117:             //undo
-                    if(undo_cnt>0) undo();
-                    else ;
-                    break;
-                case 114:             //replay
-                    restart();
-                    break;
-                case 110:             //new
-                    new_start();
-                    break;
-                case 101:             //exit
-                    save_file();
-                    break;
-                case 115:             //save
-	            save_file();
-                    break;
-                case 102:             //file load
-            	    load_file();
-                    break;
-                case 100:             //display help
-	            display_help();
-                    break;
-                case '1':
-           	    level_clear();
-           	    break;
-                default:
-                    break;
+            if (key == '\n'){
+                rank_view();
+                return ;
             }
-	//}
+            else if (key == '1'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '2'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '3'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '4'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+            else if (key == '5'){
+                key = getch();
+                if (key == '\n'){
+                    rank_view();
+                    return ;
+                }
+                else ;
+            }
+        }
+        else if (key == 'h'){
+            move(pos_x,pos_y);            //left
+            return ;
+        }
+        else if (key == 'l'){
+            move(pos_x,pos_y);           //right
+            return ;
+        }
+        else if (key == 'k'){
+            move(pos_x,pos_y);              //up
+            return ;
+        }
+        else if (key == 'j'){
+            move(pos_x,pos_y);            //down
+            return ;
+        }
+        else if (key == 'u'){             //undo
+            if(undo_cnt>0) undo();
+            else ;
+            return ;
+        }
+        else if (key == 'r'){             //replay
+            restart();
+            return ;
+        }
+        else if (key == 'n'){             //new
+            new_start();
+            return ;
+        }
+        else if (key == 'e'){             //exit
+            save_file();
+            return ;
+        }
+        else if (key == 's'){             //save
+            save_file();
+            return ;
+        }
+        else if (key == 'f'){             //file load
+            load_file();
+            return ;
+        }
+        else if (key == 'd'){            //display help
+            display_help();
+            return ;
+        }
+        else if (key == '1'){
+            level_clear();
+            return ;
+        }
+        else
+            return ;
 }
 void display_help(void){
 	system("clear");
@@ -369,7 +416,6 @@ void check_$(void){
 	if(left_$==cnt_$) level_clear();
 }
 void level_clear(void){
-	rank_file();
 	int i, j, k;
 	cnt_O=0,cnt_$=0;
 	undo_cnt=5;
@@ -377,20 +423,13 @@ void level_clear(void){
 		stor_x[i]=0;
 		stor_y[i]=0;
 	}
-	if(rank_cnt[0][level-1]==0){
-		rank_cnt[0][level-1]=cnt;
-		for(i=0; i<10; i++)
-			rank_name[i][0][level-1]=name[i];
-	}
-	else{
-		rank_cnt[6][level-1]=cnt;
-		for(i=0; i<10; i++)
-			rank_name[i][6][level-1]=name[i];
-	}
+	rank_cnt[0][level-1]=cnt;
+	for(i=0; i<10; i++)
+		rank_name[i][0][level-1]=name[i];
 	cnt=0;
 	rank_save();
 	if(level<5) level++;
-	else  level=1;
+	else level=1;
 	main();
 }
 void save_file(void){
@@ -407,7 +446,9 @@ void save_file(void){
 			fprintf(f,"%c",save_map[i][j]);
 		}
 	}
-	fprintf(f, "\n%d\n%d\n%d\n%d\n%d\n", level,cnt,undo_cnt,cnt_$,cnt_O);
+	fprintf(f, "\n%d\n%d\n%d\n%d\n%d", level,cnt,undo_cnt,cnt_$,cnt_O);
+	for(i=0;name[i]!=0;i++)
+		fprintf(f,"%c",name[i]);
 	fclose(f);
 	return ;
 }
@@ -415,6 +456,7 @@ void load_file(void){
 	FILE*f;
 	int i, j, k;
 	int a[5]={0};
+	char trash;
 	f=fopen("sokoban.txt","r");
 	for(i=0; i<30; i++){
 		for(j=0; j<30; j++){
@@ -429,6 +471,9 @@ void load_file(void){
 	undo_cnt=a[2];
 	cnt_$=a[3];
 	cnt_O=a[4];
+	for(i=0; name[i]!=0; i++)
+		name[i]=0;
+	for(i=0;fscanf(f,"%c",&name[i])!=EOF;i++) ;
 	for(i=0;i<30;i++){
 		for(j=0;j<30;j++){
 			c_map[i][j]=save_map[i][j];
@@ -462,54 +507,26 @@ void input_name(void)
 void rank_save(void){
 	int i, j, k;
 	FILE*f=fopen("ranking.txt","wt");
+	bubble_sort();
 	for(k=1; k<6; k++){	
 		fprintf(f,"map%d\n",k);
 		for(i=0; i<5; i++){
 			for(j=0; j<10; j++){
+				if(rank_name[0][i][k-1]==0) break;
 				fprintf(f,"%c",rank_name[j][i][k-1]);
 			}
-			fprintf(f,"\t%d\n",rank_cnt[i][k-1]);
+			if(rank_name[0][i][k-1]!=0)
+				fprintf(f,"\t%d\n",rank_cnt[i][k-1]);
 		}
 	}
 	fclose(f);
 }
-
-void rank_file(void){
-	FILE*f;
-	f = fopen("ranking.txt", "a");
-        fprintf(f, "%d %s\n", cnt, name);
-	fclose(f);
-	return ;
-}
-void rank_view(void){
-	int last_cnt;
-	last_cnt = cnt;
-	system("clear");
-
-	FILE*f;
-	f = fopen("ranking.txt", "r");
-	fscanf(f, "%d %s\n", &last_cnt, &name);
-	printf("%d %s\n", last_cnt, name);
-        fclose(f);
-
-	while(1){
-	    key = getch();
-
-	    switch(key){
-	        case 116:
-	    	    return;
-		default:
-		    break;
-	    }
-	}
-}
 void bubble_sort(void){
 	int i, j, k, l, temp, tname[10];
-	for(k=0; k<5; k++){
+	for(k=0; k<5; k++){	
 		for(i=0; i<5; i++){
 			for(j=0; j<5; j++){
-				if(rank_name[0][j][k]!=0 && rank_name[0][j+1][k]==0) break;
-				else if(rank_name[0][j][k]==0 && rank_name[0][j+1][k]!=0){
+				if(rank_cnt[j][k]>rank_cnt[j+1][k]){
 					temp=rank_cnt[j][k];
 					rank_cnt[j][k]=rank_cnt[j+1][k];
 					rank_cnt[j+1][k]=temp;
@@ -523,35 +540,29 @@ void bubble_sort(void){
 						rank_name[l][j+1][k]=tname[l];
 					}
 				}
-				else if(rank_name[0][j][k]!=0 && rank_name[0][j+1][k]!=0){
-					if(rank_cnt[j][k]>rank_cnt[j+1][k]){
-						temp=rank_cnt[j][k];
-						rank_cnt[j][k]=rank_cnt[j+1][k];
-						rank_cnt[j+1][k]=temp;
-						for(l=0; l<10; l++){
-							tname[l]=rank_name[l][j][k];
-						}
-						for(l=0; l<10; l++){
-							rank_name[l][j][k]=rank_name[l][j+1][k];
-						}
-						for(l=0; l<10; l++){
-							rank_name[l][j+1][k]=tname[l];
-						}
-					}
-				}
-				else if(rank_name[0][j][k]==0 && rank_name[0][j+1][k]==0) break;
 			}
 		}
 	}
 }
-void load_name(void)
-{
-	int cnt[30], pre_cnt;
-	char pre_name;
-	FILE*f;
-	f=fopen("ranking.txt", "r");
-	fscanf(f, "%d %s\n", &pre_cnt, &pre_name);
-	name[30]=pre_name;
-	cnt[30]=pre_cnt;
+void rank_view(void){
+	int last_cnt;
+	last_cnt = cnt;
+	system("clear");
 
+	FILE*f;
+	f = fopen("ranking.txt", "r");
+	fscanf(f, "%d %s\n", &last_cnt, &name);
+	printf("%d %s\n", last_cnt, name);
+    fclose(f);
+
+	while(1){
+	    key = getch();
+
+	    switch(key){
+	        case 116:
+	    	    return;
+		default:
+		    break;
+	    }
+	}
 }
