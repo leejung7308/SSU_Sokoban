@@ -46,10 +46,11 @@ int left_$;
 
 int main(){
 	int i, j, k;
-	if(name[0]==0)
+	if(name[0]==0){
 		input_name();
+		rank_load();
+	}
 	load_map();
-	rank_load();
 	for(k=0;k<5;k++){
 		for(i=0;i<30;i++){
 			for(j=0;j<30;j++){
@@ -57,7 +58,7 @@ int main(){
 			}
 		}
 	}	
-	//system("clear");
+	system("clear");
 	current_map();
 	count_check();
 	if(cnt_O!=cnt_$){
@@ -66,6 +67,10 @@ int main(){
 	}
 	pos_storage();
 	while(1){  		//게임 진행
+		if(level==6){
+			printf("-----------CLEAR!!!!!!------------");
+			return 0;
+		}
 		position();
 		print_map();
 		check_$();
@@ -374,8 +379,7 @@ void level_clear(void){
 		rank_name[i][5][level-1]=name[i];
 	cnt=0;
 	rank_save();
-	if(level<5) level++;
-	else level=1;
+	level++;
 	main();
 }
 void save_file(void){
@@ -575,51 +579,30 @@ void rank_view(int n){
         else ;
 	}
 }
-/*void rank_load(void){
-	char pre_name[10]={0},a;
-	int pre_cnt,num;
-	int i=-1,j,k;
-	FILE*f=fopen("ranking.txt","r");
-	while(!feof(f)){
-		for(j=0; j<5; j++){
-			fscanf(f,"%d",&num);
-			fscanf(f,"%s",&pre_name);
-			fscanf(f,"%d",&pre_cnt);
-			if(num==1){
-				rank_cnt[j][i+1]=pre_cnt;
-				for(k=0; k<10; k++){
-					rank_name[k][j][i+1]=pre_name[k];
-				}
-				i++;
-				break;
-			}
-			rank_cnt[j][i]=pre_cnt;
-			for(k=0; k<10; k++){
-				rank_name[k][j][i]=pre_name[k];
-			}
-		}
-	}
-}*/
 void rank_load(){
     FILE *f=fopen("ranking.txt","r");
     int i=0, j=0, k=0, pre_cnt;
-    char pre_name[10]={0};
+    char pre_name[10]={0},a;
     while(!feof(f)){
     	fscanf(f,"%s",&pre_name);
-    	if(pre_name=="map1") continue;
-        else if(pre_name=="map2"||pre_name=="map3"||pre_name=="map4"||pre_name=="map5"){
-            k++;
-           	j=0;
-           	continue;
-        }
+    	if(pre_name[0]=='m' && pre_name[1]=='a' && pre_name[2]=='p'){
+    		if(pre_name[3]=='1') continue;
+    		else if(pre_name[3]=='2' || pre_name[3]=='3' || pre_name[3]=='4' || pre_name[3]=='5'){
+    			k++;
+    			j=0;
+    			continue;
+			}
+		}
         else ;
     	fscanf(f,"%d",&pre_cnt);
-    	printf("%s %d\n",pre_name,pre_cnt);
     	for(i=0; i<10; i++){				    
             rank_name[i][j][k]=pre_name[i];
 		}
 		rank_cnt[j][k]=pre_cnt;
 		j++;
 	}
+	rank_cnt[j-1][4]=9999999;
+	for(i=0; i<10; i++){
+		rank_name[i][j-1][4]=0;
+	}
 }
-
