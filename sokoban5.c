@@ -254,6 +254,7 @@ void push_key(void){
                 }
                 else ;
             }
+            else ;
         }
         else if (key == 'h'){
             move(pos_x,pos_y);            //left
@@ -318,19 +319,13 @@ void display_help(void){
 	printf("e(exit) : 현재 게임 저장 후 종료\n");
 	printf("s(save) : 현재 게임 저장\n");
 	printf("f(file load) : 저장 시점부터 이어서 게임 시작\n");
-	printf("t(top) : 게임 순위, t만 입력시 전체 순위, t + 맵숫자 입력시 해당 맵의 순위\n\n\n\n");
-	printf("d를 한번 더 누르시면 게임 화면으로 돌아갑니다.\n");
+	printf("t(top) : 게임 순위, t만 입력시 전체 순위, t + 맵숫자 입력시 해당 맵의 순위");
 
 	while(1){
 	    key = getch();
 
-	    switch (key)
-	    {
-                case 100:
-		    return;
-		default:
-		    break;
-	    }
+            if (key == '\n') return;
+            else ;
 	}
 }
 void restart(void){
@@ -557,12 +552,7 @@ void rank_view(void){
 
 	while(1){
 	    key = getch();
-
-	    switch(key){
-	        case 116:
-	    	    return;
-		default:
-		    break;
+            if (key == '\n') return;
+            else ;
 	    }
 	}
-}
