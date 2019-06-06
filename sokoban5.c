@@ -27,6 +27,7 @@ void input_name(void);
 void rank_save(void);
 void bubble_sort(void);
 void rank_view(void);
+void rank_load(void);
 
 char name[100]={0};
 char rank_name[10][6][5]={0};
@@ -47,6 +48,7 @@ int main(){
 	int i, j, k;
 	if(name[0]==0)
 		input_name();
+		rank_load();
 	load_map();
 	for(k=0;k<5;k++){
 		for(i=0;i<30;i++){
@@ -556,3 +558,11 @@ void rank_view(void){
             else ;
 	    }
 	}
+void rank_load(void){ //새로 켰을 때 예전 랭킹을 불러오는 함수
+
+int i, j;
+char pre_name[10];
+FILE*f;
+f=fopen("ranking.txt", "r");
+fscanf(f, "%d %s\n", &rank_cnt, &pre_name);
+}
