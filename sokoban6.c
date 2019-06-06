@@ -27,6 +27,7 @@ void input_name(void);
 void rank_save(void);
 void bubble_sort(void);
 void rank_view(int n);
+void rank_load(void);
 
 char name[100]={0};
 char rank_name[10][6][5]={0};
@@ -611,3 +612,28 @@ void rank_view(int n){
         else ;
 	}
 }
+void rank_load(){
+                FILE *f=fopen("ranking.txt","r");
+                int i=0, j=0, k=0;
+                char pre_name[10]={0};
+                for(int t=0; t<36; t++){
+                        while(fscanf(f,"%s %d\n",&pre_name, &rank_cnt[j][k])!=EOF){
+                                if(pre_name=='map'){
+                                if(rank_cnt==1)
+                                                        ;
+                                                else if(rank_cnt==2||rank_cnt==3||rank_cnt==4||rank_cnt==5){
+                                i=0;
+                                k++;
+                                j=0;
+                                }
+                        else{
+                                j++;
+                                rank_name[i][j][k]=pre_name;
+
+                                                }
+                                         }
+
+
+        }
+}
+
