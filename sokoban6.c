@@ -35,6 +35,7 @@ char undo_arr[30][30][5]={0};
 char save_map[30][30]={0};
 char map[30][30][6]={0};		//맵 배열
 char c_map[30][30]={0};
+char pre_name[10]={10};
 int rank_cnt[6][5]={0};
 int cnt = 0;				//이동횟수
 int level=1;				//레벨
@@ -618,23 +619,21 @@ void rank_load(){
                 int i=0, j=0, k=0;
                 char pre_name[10]={0};
                 for(int t=0; t<36; t++){
-                        while(fscanf(f,"%s %d\n",&pre_name, &rank_cnt[j][k])!=EOF){
+                        while(fscanf(f,"%s%d\n",&pre_name, &rank_cnt[j][k])!=EOF){
                                 if(pre_name=='map'){
-                                if(rank_cnt==1)
-                                                        ;
-                                                else if(rank_cnt==2||rank_cnt==3||rank_cnt==4||rank_cnt==5){
-                                i=0;
-                                k++;
-                                j=0;
+                                	if(rank_cnt==1) ;
+                                        else if(rank_cnt==2||rank_cnt==3||rank_cnt==4||rank_cnt==5){
+                                		k++;
+                                		j=0;
+                                	}
+					else ;
+				}
+                        	else{   
+    					for(i=0; i<10; i++){				    
+                                		rank_name[i][j][k]=pre_name[i];
+						j++;
+					}
                                 }
-                        else{
-                                j++;
-                                rank_name[i][j][k]=pre_name;
-
-                                                }
-                                         }
-
-
-        }
-}
+			}
+		}
 }
