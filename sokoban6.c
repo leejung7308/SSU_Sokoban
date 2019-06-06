@@ -48,6 +48,7 @@ int main(){
 	int i, j, k;
 	if(name[0]==0)
 		input_name();
+		rank_load();
 	load_map();
 	for(k=0;k<5;k++){
 		for(i=0;i<30;i++){
@@ -636,4 +637,4 @@ void rank_load(){
 
         }
 }
-
+}
