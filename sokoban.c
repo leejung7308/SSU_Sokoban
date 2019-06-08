@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<Windows.h>
-//#include<conio.h>
 #include<termios.h>
 void load_map(void);			//맵 받아오기                     
 int getch(void); 			//엔터 없이 입력
@@ -18,31 +17,30 @@ void new_start(void);			//새 게임
 void move(int x, int y);		//움직임
 void save_undo(void);			//undo 배열 저장
 void undo(void);			//undo
-void check_$(void);			//보관장소에 상자 몇개 들어갔는지
+void check_$(void);			//보관장소에 상자 몇 개 들어갔는지 확인
 void level_clear(void);			//클리어
-void save_file(void);			//세이브/
+void save_file(void);			//세이브
 void load_file(void);			//로드
-void set_undo(void);
-void input_name(void);
-void rank_save(void);
-void bubble_sort(void);
-void rank_view(int n);
-void rank_load(void);
+void input_name(void);			//닉네임 입력
+void rank_save(void);			//랭킹 저장
+void bubble_sort(void);			//버블 정렬(랭킹 정렬용)
+void rank_view(int n);			//랭킹출력(t커맨드)
+void rank_load(void);			//랭킹 로드
 
-char name[100]={0};
-char rank_name[10][6][5]={0};
-char undo_arr[30][30][5]={0};
-char save_map[30][30]={0};
+char name[100]={0};			//이름 배열
+char rank_name[10][6][5]={0};		//랭킹에 들어가는 이름들 배열
+char undo_arr[30][30][5]={0};		//undo하기 위해 이전행동들 넣어놓는 배열
+char save_map[30][30]={0};		//저장파일에 저장하고 로드할 맵 진행상황
 char map[30][30][6]={0};		//맵 배열
-char c_map[30][30]={0};
-int rank_cnt[6][5]={0};
+char c_map[30][30]={0};			//current_map(현재 맵)
+int rank_cnt[6][5]={0};			//랭킹에 들어가는 이동횟수 배열
 int cnt = 0;				//이동횟수
 int level=1;				//레벨
 int pos_x, pos_y, cnt_O=0, cnt_$=0;	//@ 좌표 및 상자, 보관장소 개수
 int stor_x[20]={0},stor_y[20]={0};	//보관장소 좌표 배열
 int key;				//입력 받는 키
-int undo_cnt=5;			//
-int left_$;
+int undo_cnt=5;				//undo 개수 제한
+int left_$;				//남은 상자 개수
 
 int main(){
 	int i, j, k;
@@ -61,14 +59,14 @@ int main(){
 	system("clear");
 	current_map();
 	count_check();
-	if(cnt_O!=cnt_$){
+	if(cnt_O!=cnt_$){	//상자와 창고 개수 불일치 시 오류메세지 출력 후 종료
 		printf("Mismatch between box and storage count.\n"); 
 		return 0;
-	}
+	}	
 	pos_storage();
 	while(1){  		//게임 진행
-		if(level==6){
-			printf("-----------CLEAR!!!!!!------------");
+		if(level==6){	
+			printf("-----------CLEAR!!!!!!------------\n");
 			return 0;
 		}
 		position();
@@ -248,34 +246,34 @@ void push_key(void){
             else ;
         }
         else if (key == 'h'){
-            move(pos_x,pos_y);            //left            
+            move(pos_x,pos_y);           //left            
         }
         else if (key == 'l'){
             move(pos_x,pos_y);           //right            
         }
         else if (key == 'k'){
-            move(pos_x,pos_y);              //up            
+            move(pos_x,pos_y);           //up            
         }
         else if (key == 'j'){
-            move(pos_x,pos_y);            //down            
+            move(pos_x,pos_y);           //down            
         }
-        else if (key == 'u'){             //undo
+        else if (key == 'u'){            //undo
             if(undo_cnt>0) undo();
             else ;            
         }
-        else if (key == 'r'){             //replay
+        else if (key == 'r'){            //replay
             restart();  
         }
-        else if (key == 'n'){             //new
+        else if (key == 'n'){            //new
             new_start();
         }
-        else if (key == 'e'){             //exit
+        else if (key == 'e'){            //exit
             save_file(); 
         }
-        else if (key == 's'){             //save
+        else if (key == 's'){            //save
             save_file(); 
         }
-        else if (key == 'f'){             //file load
+        else if (key == 'f'){            //file load
             load_file();   
         }
         else if (key == 'd'){            //display help
@@ -474,7 +472,7 @@ void bubble_sort(void){
 	int i, j, k, l, temp, tname[10];
 	for(i=0;i<5;i++){
 		for(j=0;j<6;j++){
-			if(rank_name[0][j][i]==0) rank_cnt[j][i]=999999;
+			if(rank_name[0][j][i]==0) rank_cnt[j][i]=9999999;
 		}
 	}
 	for(k=0; k<5; k++){	
