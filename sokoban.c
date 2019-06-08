@@ -41,6 +41,8 @@ int stor_x[20]={0},stor_y[20]={0};	//보관장소 좌표 배열
 int key;				//입력 받는 키
 int undo_cnt=5;				//undo 개수 제한
 int left_$;				//남은 상자 개수
+int box=0;
+int storage=0;
 
 int main(){
 	int i, j, k;
@@ -59,12 +61,12 @@ int main(){
 	system("clear");
 	current_map();
 	count_check();
-	if(cnt_O!=cnt_$){	//상자와 창고 개수 불일치 시 오류메세지 출력 후 종료
-		printf("Mismatch between box and storage count.\n"); 
-		return 0;
-	}	
 	pos_storage();
 	while(1){  		//게임 진행
+		if(box!=storage){	//상자와 창고 개수 불일치 시 오류메세지 출력 후 종료
+			printf("Mismatch between box and storage count.\n"); 
+			return 0;
+		}
 		if(level==6){	
 			printf("-----------CLEAR!!!!!!------------\n");
 			return 0;
@@ -103,6 +105,8 @@ void load_map(void){
 			map[y][x][z]=a;
 			x++;
 		}
+		if(a=='O') storage++;
+		if(a=='$') box++;
 	}
 	for(i=1; i<=5; i++){
 		map[0][0][i]=i+48;
