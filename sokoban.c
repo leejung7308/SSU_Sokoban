@@ -344,6 +344,7 @@ void save_undo(void){
 }
 void undo(void){
 	int i,j,k;
+	cnt++;
 	for(i=0;i<30;i++){
 		for(j=0;j<30;j++){
 			c_map[i][j]=undo_arr[i][j][0];
