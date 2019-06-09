@@ -283,9 +283,9 @@ void push_key(void){
         else if (key == 'd'){            //display help
             display_help();
         }
-        else if (key == '1'){
+        /*else if (key == '1'){		//clear cheat key
             level_clear();  
-        }
+        }*/
         else ;     
 }
 void display_help(void){
